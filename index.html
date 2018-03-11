@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="shortcut icon" type="image/x-icon" href="">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="format-detection" content="telephone=no"/>
+  <title>九宫格游戏</title>
+  <script src="js/resize_init.js"></script>
+<link rel="stylesheet" href="css/rule.css"/>
+<link rel="stylesheet" href="css/index_sudoku.css"/>
+<link rel="stylesheet" href="css/award3.css"/>
+<link rel="stylesheet" href="css/common.css"/>
+</head>
+<body>
+ <div id="db-content" style="display: block;">
+    <a class="record" href="indexRecord?ftlName=list"></a>
+    <div class="banner">
+      <div class="rule"></div>
+    </div>
+	
+	<div class="lottery-wrapper" id="lottery-wrapper">
+	    <div class="light-group default"></div>
+        <ul class="lottery-area">
+            <li class="lottery one lottery-unit-0" actwardid="101">
+            	<span class="img" style="background-image: url(img/jiugongge/H5_15.png);"></span>
+                <span class="name"></span>
+            </li>
+            <li class="lottery two lottery-unit-1" actwardid="102">
+            	<span class="img" style="background-image: url(img/jiugongge/H5_03.png);"></span>
+                <span class="name"></span>
+            </li>
+            <li class="lottery three lottery-unit-2" actwardid="103">
+            	<span class="img" style="background-image: url(img/jiugongge/H5_05.png);"></span>
+                <span class="name"></span>
+            </li>
+            <li class="lottery four lottery-unit-3" actwardid="104">
+            	<span class="img" style="background-image: url(img/jiugongge/H5_07.png);"></span>
+                <span class="name"></span>
+            </li>
+            <li class="lottery five lottery-unit-4" actwardid="105">
+            	<span class="img" style="background-image: url(img/jiugongge/H5_16.png);"></span>
+                <span class="name"></span>
+            </li>
+            <li class="lottery six lottery-unit-5" actwardid="106">
+            	<span class="img" style="background-image: url(img/jiugongge/H5_22.png);"></span>
+                <span class="name"></span>
+            </li>
+            <li class="lottery seven lottery-unit-6" actwardid="107">
+            	<span class="img" style="background-image: url(img/jiugongge/H5_20.png);"></span>
+                <span class="name"></span>
+            </li>
+            <li class="lottery eight lottery-unit-7" actwardid="108">
+            	<span class="img" style="background-image: url(img/jiugongge/H5_21.png);"></span>
+                <span class="name"></span>
+            </li>
+        </ul>
+        <div class="begin-lottery"></div>
+    </div>
+	<div class="needCredits" id="needCredits">
+	   <p></p>
+	</div>
+	<div class="hand"></div>
+	<div class="bottomLink">
+	    <a href="javascript:void(0)" class="icon rule"></a>
+		<a href="" class="icon award"></a>
+	</div>
+
+  </div>
+  
+  <!--奖品弹窗-->
+  <div class="J_modalShowPrize coupon-modal-showPrize" style="display:none;">
+    <div class="coupon-modal-showPrize-dialog">
+      <span class="close coupon-modal-close"></span>
+      <div class="modal-light">
+        <div class="l-shine"></div>
+      </div>
+      <div class="modal-header"></div>
+      <div class="modal-body withoutCode">
+        <div class="body-header"></div>
+        <div class="coupon-wrapper">
+          <div class="coupon-image">
+            <img class="J_gotoDetail logandgo">
+          </div>
+        </div>
+        <div class="body-footer">
+          <span class="coupon-win"></span>
+          <button type="button" class="J_btnCoupon coupon-use"><span></span></button>
+        </div>
+      </div>
+      <i class="decoration"></i>
+    </div>
+  </div>
+  
+  <!--规则-->
+	<div class="rule-modal" style="display: none;">
+		<div class="rule-modal-dialog">
+			<header>
+				<i></i><span>活动说明</span><i></i>
+			</header>
+			<section>
+				<div class="description">
+					<div class="description-scroller" style="transform: translate(0px, 0px) translateZ(0px);"></div>
+				</div>
+				<div class="probability">
+					<div class="nav">
+						<span>更多概率说明</span><i></i>
+					</div>
+					<div class="text">
+						<div class="probability-wrapper"><div class="probability-scroller" style="transform: translate(0px, 0px) translateZ(0px);"></div></div>
+					</div>
+				</div>
+			</section>
+		</div>
+		<div class="close"></div>
+	</div>
+	
+	<!--设备达到点击次数后弹出跳转框，可切换游戏-->
+	<div id="recommend-modal" class="recommend-modal" style="display: none;">
+		<div class="recommend-modal-dialog">
+			<i class="close"></i>
+			<div class="recommend-body1">
+				<a class="fuli" href=""></a> 
+				<a class="recommend-li" href="${basePath}/funbox?appId=${appId!}&deviceId=${deviceId!}">
+					<i class="recommend-btn"></i> 
+					<img src="img/hiteggGame.png">
+				</a> 
+				<a class="recommend-li" href="${basePath}/funbox?appId=${appId!}&deviceId=${deviceId!}">
+					<i class="recommend-btn"></i> 
+					<img src="img/rotateGame.png">
+				</a>
+			</div>
+		</div>
+	</div>
+
+	<!-- 谢谢参与 -->
+	<div class="db-msg-modal" id="thanks" style="display: none;">
+		<div class="msg-modal-wrapper">
+			<div class="msg-modal-header">
+				<i class="msg-modal-close"></i>
+				<h4 class="msg-title">谢谢参与！</h4>
+				<p class="msg-tip">再试一遍吧~</p>
+			</div>
+			<div class="msg-modal-section">
+				<img src="img/thanks1.png" />
+			</div>
+			<div class="msg-modal-footer">
+				<a href="javascript:;" class="msg-btn">再试一遍</a>
+			</div>
+		</div>
+	</div>
+
+<!-- 首屏加载公用js、css -->
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/iscroll.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript">
+
+var data={
+  "success":true,
+  "leftTimes":4,
+  "data":{
+    "clkTrakings": [
+    "http:\/\/test2014.adview.cn:8088\/agent\/click?st=&uuidEncType=0&sv=&src=1&sy=1&nt=&adi=20170915-100522_h7WkUdcb_1-254-5np5-1_1&bi=com.test&ai=j4hIg14BAAAeIwpUQCUoJ76cNlUQfatSioQPSmUZ3Et5F5xZhljVcxjhhhtenWvEQxu7cxN8dmxGf8Qf2XrJLs1QMtorCcEFQ2CROUtZ-PYVcRY350gj4ZQfsO8DUtsJ_GxZrj714-CINmauq4g4Sf1IXG8VqbDTEeuDlVGVc7Tay_D46oRvgMM9qVh94oA&ud=726E3808-134A-43AC-9607-E43876EA487B&as=&se=&cv=&rqt=6&ti=1505441127&tm=0&to=b8996008031c1deb116402d5e604f760&aid=SDK20150921090557wlj7sksdgdg860h&ro=1&ca=0"
+  ],
+  "detailDesc": "<div><strong><strong><img src=\"\/\/yun.duiba.com.cn \/tuia\/img\/rg0it6kr56.jpg\"\/><br\/><\/strong><\/strong><h3><strong>使用流程<\/strong><\/h3><ol class=\" list-paddingleft-2\"><li><p>点击马上使用，进入产品订购页面，点击立即抢购<\/p><\/li><li><p>选择产品，正确填写收货信息，提交订单（错误地址将导致发货失败）<\/p><\/li><li><p>新增的<br\/><\/p><\/li><\/ol><h3><strong>使用规则<\/strong><br\/><\/h3><ul class=\" list-paddingleft-2\"><li><p>仅限新用户兑换使用一次，不可与其他优惠叠加使用<\/p><\/li><li><p>如有商品详情咨询，下单流程，发货，售前\/售后服务等问题，请致电商家客服电话：4009260511<\/p><\/li><li><p>如有券码问题，可直接联系客服专线：400-080-6659或客服QQ：4000806659 （工作日9:30至18:30）<\/p><\/li><\/ul><\/div>",
+  "buttonText": "现在领取",
+  "impTrakings": [   "http:\/\/test2014.adview.cn:8088\/agent\/display?st=&uuidEncType=0&sv=&src=1&sy=1&nt=&adi=20170915-100522_h7WkUdcb_1-254-5np5-1_1&bi=com.test&ai=j4hIg14BAAAeIwpUQCUoJ76cNlUQfatSioQPSmUZ3Et5F5xZhljVcxjhhhtenWvEQxu7cxN8dmxGf8Qf2XrJLs1QMtorCcEFQ2CROUtZ-PYVcRY350gj4ZQfsO8DUtsJ_GxZrj714-CINmauq4g4Sf1IXG8VqbDTEeuDlVGVc7Tay_D46oRvgMM9qVh94oA&ud=726E3808-134A-43AC-9607-E43876EA487B&as=&se=&cv=&rqt=6&ti=1505441127&tm=0&to=b8996008031c1deb116402d5e604f760&aid=SDK20150921090557wlj7sksdgdg860h&ro=1&ca=0"
+  ],
+  "endUrl": "http://www.adview.com",
+  "success": true,
+  "detailImg": "http:\/\/test2014.adview.cn:8088\/h7wkudcb20170912133735335000_640_300.gif",
+  "icon": "http:\/\/test2014.adview.cn:8088\/h7wkudcb20170912133730786000_225_140.png",
+  "popImg": "img/ad.png",
+  "title": "测试标题"
+  }
+};
+$(function(){	
+   getRule();//获取规则
+   lotteryEvent();//点击抽奖按钮 
+   toggleLight();
+
+   function lotteryEvent(){
+		var $self = this;
+		var lotterydata={};  //返回结果
+		var lottery={
+			index:-1,	//当前转动到哪个位置
+			count:0,	//总共有多少个位置
+			timer:0,	//setTimeout的ID，用clearTimeout清除
+			speed:100,	//初始转动速度
+			times:0,	//转动次数
+			cycle:8,	//转动基本次数：即至少需要转动多少次再进入抽奖环节
+			prize:-1,	//中奖位置
+			running: false,
+			leftTimes:5, //剩余次数
+			hasNoTimes:false,
+			isRender:false,
+			jsondata:"",
+			init:function(id){
+				if ($("#"+id).find(".lottery").length>0) {
+					$lottery = $("#"+id);
+					$units = $lottery.find(".lottery");
+					this.obj = $lottery;
+					this.count = $units.length;
+					$lottery.find(".lottery-unit-"+this.index).addClass("active");
+				};	
+				this.renderElement(false);
+			},
+			roll:function(){
+				var index = this.index;
+				var count = this.count;
+				var lottery = this.obj;
+				$(lottery).find(".lottery-unit-"+index).removeClass("active");
+				index += 1;
+				if (index>count-1) {
+					index = 0;
+				};
+				$(lottery).find(".lottery-unit-"+index).addClass("active");
+				this.index=index;
+				return false;
+			},
+			stop:function(index){
+				this.prize=index;
+				return false;
+			},
+			reset:function(){
+			    this.prize=-1;
+				this.index=-1;
+				this.times=0;
+				this.running = false;
+			},
+			renderElement:function(flag){//游戏剩余次数初始化,leftTimes=-1，表示不限次数
+			   $(".needCredits p").html((this.leftTimes==-1) ? '不限次数': 
+				(this.leftTimes ? "今日剩余<span id='leftTime'>" + this.leftTimes + "</span>次免费抽奖机会！": "抽奖机会已用完")).show();
+				(this.leftTimes==-1) ? this.hasNoTimes = !1 : (this.leftTimes ? this.hasNoTimes = !1 : (this.hasNoTimes = !0, flag == true ? showModal('recommend-modal') : 1));
+				(this.leftTimes==-1) ? this.isRender = false : this.isRender = true;
+			}
+		};
+		lottery.init('lottery-wrapper');//初始化
+		
+		//点击开始抽奖按钮
+		$(".begin-lottery").on('click', pressDown);
+		
+		function getResult(){
+		// 没有取到广告，定位到谢谢参与
+		var result = data;
+						if(!result.success){
+							result["id"] = 105;//谢谢参与id
+							lottery.jsondata = result;
+						// 取到广告，定位福袋 
+						}else{
+						    result["id"] = 106;//幸运奖id
+						    lottery.jsondata = result;
+						}
+						var id = result.id;//中奖商品id
+						if(id){
+							$(".lottery-wrapper ul li").each(function(){
+								if($(this).attr("actwardid") == id){
+									$(this).removeClass('active');
+									lottery.prize = $(this).attr("class").split("lottery-unit-")[1];
+								}
+							})
+						}
+		       // 没有取到广告，定位到谢谢参与
+		       /*$.ajax({
+					url: '${basePath}/funbox/getFunboxAd',
+					data : {
+						"activityId":"${id!}",
+						"cdeviceId":"${cdeviceId!}",
+						"rdeviceId":"${rdeviceId!}",
+						"appId":"${appId!}",
+						"time":new Date().getTime()
+					},
+					type: "POST",
+					dataType: "json",
+					async: false,
+					success: function (result) {
+						// 没有取到广告，定位到谢谢参与
+						if(!result.success){
+							result["id"] = 105;//谢谢参与id
+							lottery.jsondata = result;
+						// 取到广告，定位福袋 
+						}else{
+						    result["id"] = 106;//幸运奖id
+						    lottery.jsondata = result;
+						}
+						var id = result.id;//中奖商品id
+						if(id){
+							$(".lottery-wrapper ul li").each(function(){
+								if($(this).attr("actwardid") == id){
+									$(this).removeClass('active');
+									lottery.prize = $(this).attr("class").split("lottery-unit-")[1];
+								}
+							})
+						}
+					},
+					error:function(){
+						// 弹出网络异常 
+						console.log("网络异常");
+						clearTimeout(lottery.timer);
+						lottery.reset();
+						$(".lottery-area li").removeClass("active");
+						console.log("系统问题，稍后再试");
+						$('.mask').hide();
+					}
+		       });*/
+		       
+		}
+		
+		function showResultModel(result){
+		  setTimeout(function() {
+		    lottery.running = false;
+		    if(result.success){
+				var data = result.data;
+				/* 奖品 */
+				$(".J_modalShowPrize .J_gotoDetail").attr("src",data.popImg);
+				$(".J_modalShowPrize .coupon-name span").html(data.title);
+				$(".J_modalShowPrize .coupon-use span").html(data.buttonText);
+				$(".J_modalShowPrize").show();
+				if(lottery.isRender){
+				    lottery.leftTimes = result.leftTimes;
+					lottery.renderElement(false);
+				}
+				
+				/* 展示汇报 */
+				if($("[datatype='display']").length){ 
+					$("[datatype='display']").remove(); 
+				}
+				for(var i=0 ; i < data.impTrakings.length ; i++){
+					$("<iframe>", {
+						src: data.impTrakings[i],
+						dataType:'display'
+					}).appendTo("body");
+				}
+				$("[datatype='display']").hide();
+				console.log("展示曝光");
+				
+				/** 点击汇报 */
+				$(".coupon-use").unbind("click").click(function(){
+					/** 奖品弹出框隐藏  */
+					$(".J_modalShowPrize").hide();
+					reset();
+					
+					if($("[datatype='click']").length){ 
+						$("[datatype='click']").remove(); 
+					}
+					for(var j=0 ; j < data.clkTrakings.length ; j++){
+						$("<iframe>", {
+							src: data.clkTrakings[j],
+							dataType:'click'
+						}).appendTo("body");
+					}
+					$("[datatype='click']").hide();
+					console.log("完成点击");
+					//window.location.href = data.endUrl;
+				});
+			}else{
+				/** 没有取到广告，显示谢谢参与  */
+				showModal("thanks");
+				if(lottery.isRender){
+					lottery.leftTimes = result.leftTimes;
+					lottery.renderElement(false);
+				}
+			}
+		  },600);
+		}
+		
+		function roll(){
+			lottery.times += 1;
+			lottery.roll();
+			//如果抽奖次数已经用完，或者没符合条件的订单，或者已经中奖了，这种情况下就停止转动
+			if (lottery.times > lottery.cycle+10 && lottery.prize==lottery.index) {
+				clearTimeout(lottery.timer);
+				lottery.prize = -1;
+				lottery.index = -1;
+				lottery.times = 0;
+				showResultModel(lottery.jsondata);//返回结果处理	
+			}else{
+				lottery.timer = setTimeout(roll,lottery.speed);
+			}
+			return false;
+		}
+		
+		function pressDown(e){
+		    e.preventDefault();
+			if (!lottery.running) {
+				lottery.running = true;
+				if(lottery.hasNoTimes){
+				    showModal("recommend-modal") 
+		   			lottery.running = false;
+		   			return false;
+				}
+				$(".begin-lottery").addClass("disabled");
+				//游戏转动
+				roll();
+				//获取广告
+				getResult();
+		   	} else{
+				return false;
+			}	
+		}
+		
+		var pressUp=function(e){
+			e.preventDefault();
+			$(this).removeClass("down");
+		}
+    }
+	
+	function getRule(){
+			$.ajax({
+		        url: '${basePath}/funbox/getRuleConfig',
+		        data : {"id":"${id!}"},
+		        type: "POST",
+		        dataType: "json",
+		        async: false,
+		        success: function (result) {
+		        	if(!result.success){
+		        		return;
+		        	}
+		        	var data=result.data;
+		        	renderElement(data.leftTimes,false);
+		           $(".rule-modal .description-scroller").html(data.desc);
+		           $(".rule-modal .probability-scroller").html(data.rateInfo);
+		        }
+		    });
+	}
+	
+	function toggleLight() {
+			window.lightTimer = setTimeout(function() {
+				$(".light-group").toggleClass("toggle"),
+				toggleLight();
+			},500);
+	};
+	
+	function reset(){
+	    $('.mask').fadeOut();
+        $('.popup-wrapper').hide();
+        $(".lottery-area li").removeClass("active");
+		$(".begin-lottery").removeClass("disabled");
+	}
+	
+	/** 关闭奖品弹框按钮 */
+	$(".J_modalShowPrize .coupon-modal-close").on("click", function() {
+		document.touchmove = null;
+		$(".J_modalShowPrize").hide();
+		reset();
+	});
+	
+	/** 谢谢参与关闭 */
+	$(".db-msg-modal").off("click").on("click", ".msg-modal-close",function() {
+		$(".db-msg-modal").hide();
+		$("#db-content").removeClass("filter");
+		reset();
+	}).on("click", ".msg-btn",function() {
+	    $(".db-msg-modal").hide();
+		$("#db-content").removeClass("filter");
+		reset();
+	});
+	
+	
+});
+
+
+</script>  
+</body>
+</html>
